@@ -8,12 +8,12 @@ function App() {
   const [provider,setProvider] = useState(null);
   const clientId =  "BL560D1jPTAlKCd5hqYZoQYaobQVY25NIBaEpFp6wwllhHf23K3oIcpoFsHI4hEwH8gaxjVoPl6tHUgJQ3PbBeI";
   const web3 = new Web3();
-
+  const [userData,setUserData] = useState(null);
   const web3auth = new Web3Auth({
     clientId :clientId,
     chainConfig : {
       chainNamespace : "eip155",
-      chainId : 5,
+      chainId : "0x5",
     }
   });
   useEffect(()=>{
@@ -48,6 +48,7 @@ function App() {
       return;
     }
     const user = await web3auth.getUserInfo();
+    setUserData(user);
     console.log(user);
   }
 
@@ -59,12 +60,18 @@ function App() {
     setProvider(null);
   }
 
-
   return (
     <div className="App">
+      <h1>
+        {
+          userData != null
+          ? userData.email
+          : "없음"
+        }
+      </h1>
       <button onClick={logout}>로그아웃</button>
       <button onClick={connectModal}>연동</button>
-     <button onClick={getUserInfo}>유저</button>
+      <button onClick={getUserInfo}>유저</button>
     </div>
   );
 }
